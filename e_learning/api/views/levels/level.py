@@ -4,10 +4,11 @@ from models.models import Level
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
 from models.serializers import LevelSerializer
+from api.views.authentication.permissions.permissions import IsInstructor
 
 
 @api_view(['POST'])
-@permission_classes([IsAuthenticated])
+@permission_classes([IsAuthenticated, IsInstructor])
 def new_level(request):
     name = request.data.get('name')
     if name is None:

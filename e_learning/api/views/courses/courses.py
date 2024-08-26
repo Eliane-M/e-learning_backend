@@ -4,6 +4,7 @@ from rest_framework.response import Response
 from models.models import Course, Level
 from models.serializers import CourseSerializer
 from rest_framework.permissions import IsAuthenticated
+from api.views.authentication.permissions.permissions import IsInstructor
 
 @api_view(['GET'])
 def course_list(request):
@@ -16,7 +17,7 @@ def course_list(request):
 
 
 @api_view(['POST'])
-@permission_classes([IsAuthenticated])
+@permission_classes([IsAuthenticated, IsInstructor])
 def create_course(request):
     name = request.data.get('name')
     details = request.data.get('details')
@@ -55,7 +56,7 @@ def create_course(request):
     
 
 @api_view(['PUT'])
-@permission_classes([IsAuthenticated])
+@permission_classes([IsAuthenticated, IsInstructor])
 def update_course(request, course):
     if request.method == "PUT":
         name = request.data.get("name")
@@ -80,7 +81,7 @@ def update_course(request, course):
     
 
 @api_view(['DELETE'])
-@permission_classes([IsAuthenticated])
+@permission_classes([IsAuthenticated, IsInstructor])
 def delete_course(request, course):
     if request.method == "DELETE":
         course = Course.objects.get(course=int(course))

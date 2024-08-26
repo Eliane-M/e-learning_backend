@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
+from django.core.validators import FileExtensionValidator
 from django.forms import ValidationError
 from django.utils import timezone
 
@@ -38,7 +39,7 @@ class Course(models.Model):
     # industry = models.CharField(max_length=255)
     image = models.ImageField(upload_to='course_images/', editable=True, null=True)
     start_date = models.DateField()
-    duration = models.CharField(max_length=1000)
+    duration = models.CharField(max_length=1000, null=True)
     level = models.ForeignKey(Level, max_length=255, on_delete=models.CASCADE)
 
     def __str__(self):
@@ -53,7 +54,9 @@ class Course(models.Model):
 class Lesson(models.Model):
     name = models.CharField(max_length=255)
     details = models.CharField(max_length=255)
-    resource = models.FileField(upload_to='lesson_documents/', null=True, blank=True)
+    resource = models.FileField(upload_to='lesson_documents/', null=True, blank=True, validators=[
+            FileExtensionValidator(allowed_extensions=['pdf', 'doc', 'docx'])
+        ])
 
     def __str__(self):
         return self.name
