@@ -19,10 +19,11 @@ def course_list(request):
 @permission_classes([IsAuthenticated])
 def create_course(request):
     name = request.data.get('name')
-    description = request.data.get('description')
+    details = request.data.get('details')
     start_date = request.data.get('start_date')
     end_date = request.data.get('end_date')
     level = request.data.get('level')
+    image = request.data.get('image')
     try:
         level = Level.objects.get(name__iexact=level)
     except Level.DoesNotExist:
@@ -34,20 +35,21 @@ def create_course(request):
         else:
             duration = (f"{start_date} - {end_date}")
 
-    if not name or description or level:
+    if not name or details or level:
         return Response({'error': 'All fields are required.'}, status=status.HTTP_400_BAD_REQUEST)
 
     try:
         course = Course.objects.create(
             name=name,
-            description=description,
+            details=details,
             start_date=start_date,
             end_date=end_date,
             level=level,
             duration=duration,
+            image=image,
         )
-        serializer = CourseSerializer(course)
-        return Response(serializer.data)
+        serializer = CourseSerializer(course).data
+        return Response({"Message": serializer}, status=status.HTTP_201_CREATED)
     except Exception as e:
         return Response({'error': str(e)})
     

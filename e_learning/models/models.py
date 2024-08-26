@@ -35,9 +35,10 @@ class Course(models.Model):
     # ]
     name = models.CharField(max_length=100)
     details = models.TextField(blank=True, max_length=1000)
-    industry = models.CharField(max_length=255)
+    # industry = models.CharField(max_length=255)
     image = models.ImageField(upload_to='course_images/', editable=True, null=True)
     start_date = models.DateField()
+    duration = models.CharField(max_length=1000)
     level = models.ForeignKey(Level, max_length=255, on_delete=models.CASCADE)
 
     def __str__(self):

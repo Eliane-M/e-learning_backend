@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from models.models import User, Account, Course, Skills, CourseDetails, Lesson
+from models.models import User, Account, Course, Skills, CourseDetails, Lesson, Level
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -28,4 +28,10 @@ class LessonSerializer(serializers.ModelSerializer):
 class CourseDetailsSerializer(serializers.ModelSerializer):
     class Meta:
         model = CourseDetails
+        fields = '__all__'
+
+
+class LevelSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Level
         fields = '__all__'

@@ -12,21 +12,29 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 
 from datetime import timedelta
 from pathlib import Path
+import os
+from dotenv import load_dotenv
+from firebase_admin import credentials
+import firebase_admin
+
+
+load_dotenv()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
+PRODUCTION = True
 
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-6sed*bugx0f%gmj9&(-ky5gxzydqaqv@ya!ujl%*9gng(to)ua'
+SECRET_KEY = os.getenv('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["127.0.0.1"]
 
 
 # Application definition
@@ -48,6 +56,7 @@ INSTALLED_APPS = [
 MIDDLEWARE = [
     "corsheaders.middleware.CorsMiddleware",
     "django.middleware.common.CommonMiddleware",
+    # "whitenoise.middleware.WhiteNoiseMiddleware",
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -79,7 +88,7 @@ SIMPLE_JWT = {
     "SIGNING_KEY": SECRET_KEY,
     "VERIFYING_KEY": None,
     "AUTH_HEADER_TYPES": ("Bearer",),
-     'USER_ID_FIELD': 'id',
+    'USER_ID_FIELD': 'id',
     'USER_ID_CLAIM': 'user_id',
     "AUTH_TOKEN_CLASSES": ("rest_framework_simplejwt.tokens.AccessToken",),
     'TOKEN_TYPE_CLAIM': 'token_type',
@@ -172,6 +181,32 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
 STATIC_URL = 'static/'
+MEDIA = '/media/'
+
+from e_learning.firebase_bucket_credentials import firebase_credentials
+
+credential=firebase_credentials()
+
+
+cred = credentials.Certificate(credential)
+firebase_admin.initialize_app(cred, options={"storageBucket": credential["storageBucket"]})
+
+
+DEFAULT_FILE_STORAGE = 'e_learning.firebase.FirebaseStorage'  
+
+if not DEBUG:   
+
+    #Tell Django to copy statics to the `staticfiles` directory
+    # in your application directory on Render.
+    STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+    
+    # Turn on WhiteNoise storage backend that takes   care of compressing static files
+    # and creating unique names for each version so they can safely be cached forever.
+    STATICFILES_STORAGE = 'whitenoise.storage.Com/pressedManifestStaticFilesStorage'
+    DEFAULT_FILE_STORAGE = 'e_learning.firebase.FirebaseStorage'
+
+
+MEDIA_ROOT = BASE_DIR / 'media'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field

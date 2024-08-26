@@ -6,6 +6,7 @@ def firebase_credentials():
         'storageBucket': "e-learning-42407.appspot.com",
         'messagingSenderId': "325263083827",
         'appId': "1:325263083827:web:c0d6600903704e2e5cd646",
+        'measurementId': "G-ZG6BHQ85DF",
 
 
         
@@ -19,7 +20,7 @@ def firebase_credentials():
         "token_uri": "https://oauth2.googleapis.com/token",
         "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
         "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/firebase-adminsdk-z6xxg%40e-learning-42407.iam.gserviceaccount.com",
-        "universe_domain": "googleapis.com"
+        "universe_domain": "googleapis.com",
     }
 
     return credentials
