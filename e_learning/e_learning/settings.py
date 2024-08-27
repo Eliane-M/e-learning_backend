@@ -34,7 +34,7 @@ SECRET_KEY = os.getenv('SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ["127.0.0.1", 'localhost']
+ALLOWED_HOSTS = ["127.0.0.1", 'localhost', 'https://e-learning-backend-lf2d.onrender.com/']
 
 
 # Application definition
@@ -97,6 +97,7 @@ SIMPLE_JWT = {
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",
     "http://127.0.0.1:8000",
+    'https://e-learning-backend-lf2d.onrender.com',
 ]
 
 CORS_ALLOW_METHODS = (
@@ -107,13 +108,21 @@ CORS_ALLOW_METHODS = (
     "PUT",
 )
 
+CSRF_TRUSTED_ORIGINS = ['https://e-learning-backend-lf2d.onrender.com']
+
 CORS_ALLOW_HEADERS = (
-    "accept",
-    "authorization",
-    "content-type",
-    "user-agent",
-    "x-csrftoken",
-    "x-requested-with",
+    'content-type',
+    'x-requested-with',
+    'authorization',
+    'accept',
+    'accept-encoding',
+    'origin',
+    'user-agent',
+    'dont',
+    'cache-control',
+    'x-csrftoken',
+    'x-requested-with',
+    'x-xsrftoken',
 )
 
 TEMPLATES = [
